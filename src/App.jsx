@@ -240,10 +240,11 @@ const translations = {
 };
 
 export default function App() {
-  const [lang, setLang] = useState('en'); // default to en to look like a global project
+  const [lang, setLang] = useState('en'); 
   const [walletAddress, setWalletAddress] = useState(null);
   const [lgaiBalance, setLgaiBalance] = useState("0");
-  const [referrerAddress, setReferrerAddress] = useState("0x0000000000000000000000000000000000000000"); // default empty referrer
+  const [presaleBalance, setPresaleBalance] = useState("400000000"); // 400M default
+  const [referrerAddress, setReferrerAddress] = useState("0x0000000000000000000000000000000000000000"); 
   
   // Swap Widget States
   const [ethAmount, setEthAmount] = useState('');
@@ -266,7 +267,25 @@ export default function App() {
       setReferrerAddress(ref);
       console.log("Referrer set to:", ref);
     }
+
+    // Attempt to load presale contract balance globally without wallet connection
+    fetchPresaleBalanceGlobally();
   }, []);
+
+  const fetchPresaleBalanceGlobally = async () => {
+    try {
+      // Use default ethers provider for Sepolia to read contract without wallet
+      if (window.ethereum) {
+        const provider = new BrowserProvider(window.ethereum);
+        const contract = new Contract(LGAI_ADDRESS, LGAI_ABI, provider);
+        const bal = await contract.balanceOf(PRESALE_ADDRESS);
+        const decimals = await contract.decimals();
+        setPresaleBalance(formatUnits(bal, decimals));
+      }
+    } catch (e) {
+      console.log("Global fetch presale balance error:", e);
+    }
+  };
 
   // ── Web3 Connection ────────────────────────────────────────
   const connectWallet = async () => {
@@ -285,18 +304,25 @@ export default function App() {
         console.error("Failed to switch to Sepolia", err);
       }
 
-      await fetchBalance(accounts[0], provider);
+      await fetchBalances(accounts[0], provider);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const fetchBalance = async (address, provider) => {
+  const fetchBalances = async (address, provider) => {
     try {
       const contract = new Contract(LGAI_ADDRESS, LGAI_ABI, provider);
+      
+      // User Balance
       const bal = await contract.balanceOf(address);
       const decimals = await contract.decimals();
       setLgaiBalance(formatUnits(bal, decimals));
+
+      // Presale Contract Balance (Tokens left to sell)
+      const presaleBal = await contract.balanceOf(PRESALE_ADDRESS);
+      setPresaleBalance(formatUnits(presaleBal, decimals));
+
     } catch (e) {
       console.error(e);
     }
@@ -362,7 +388,7 @@ export default function App() {
 
       setEthAmount('');
       setLgaiAmount('');
-      await fetchBalance(walletAddress, provider); 
+      await fetchBalances(walletAddress, provider); 
     } catch (error) {
       console.error(error);
       alert("Swap Failed or Rejected. Please check console.");
@@ -382,6 +408,12 @@ export default function App() {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  // Calculate Presale Progress
+  const totalPresaleAmount = 400000000;
+  const currentLeft = parseFloat(presaleBalance) || totalPresaleAmount;
+  const soldAmount = totalPresaleAmount - currentLeft;
+  const progressPercent = Math.max(5, (soldAmount / totalPresaleAmount) * 100);
 
   return (
     <>
@@ -436,7 +468,7 @@ export default function App() {
             ) : lang === 'ja' ? (
               <>初の <span className="highlight">AI統治</span><br/>暗号資産帝国</>
             ) : (
-              <>{t.hero_title}</> // fallback for others
+              <>{t.hero_title}</> 
             )}
           </h1>
           <p className="hero-subtitle">{t.hero_sub}</p>
@@ -461,11 +493,11 @@ export default function App() {
             
             <div className="progress-container">
               <div className="progress-labels">
-                <span>Raised: 650.4 ETH</span>
-                <span>Goal: 1000 ETH</span>
+                <span style={{ color: 'var(--cyan)' }}>Sold: {soldAmount.toLocaleString()} LGAI</span>
+                <span>Left: {currentLeft.toLocaleString()} LGAI</span>
               </div>
               <div className="progress-bar-bg">
-                <div className="progress-bar-fill"></div>
+                <div className="progress-bar-fill" style={{ width: `${progressPercent}%` }}></div>
               </div>
             </div>
 
