@@ -35,9 +35,10 @@ const AI_MESSAGES = [
   "Agent-Delta: Neural network predicts 1000x potential."
 ];
 
-// ── i18n Dictionary ─────────────────────────────────────────────
+// ── i18n Dictionary (Top 10 Global Languages) ────────────────
 const translations = {
   en: {
+    lang_name: "English",
     nav_about: "About", nav_tokenomics: "Tokenomics", nav_roadmap: "Roadmap",
     btn_connect: "Connect Wallet", badge_presale: "LGAI PRESALE IS LIVE",
     hero_title: "The First AI-Governed Crypto Empire",
@@ -49,36 +50,197 @@ const translations = {
     ref_desc: "Share your unique referral link. You receive 5% of LGAI purchased through your link.",
     ref_copy: "Copy Link", ref_copied: "Copied!",
     sec_tokenomics: "LGAI Tokenomics", sec_tokenomics_sub: "Total Supply: 1,000,000,000 LGAI. Strategically allocated for long-term ecosystem growth.",
-    lbl_public: "Public Sale (40%)", lbl_liq: "Liquidity Pool (30%)", lbl_eco: "Ecosystem (20%)", lbl_team: "Team (10%)",
+    lbl_public: "Public Sale (40%)", lbl_liq: "Liquidity (30%)", lbl_eco: "Ecosystem (20%)", lbl_team: "Team (10%)",
     sec_roadmap: "Strategic Roadmap", sec_roadmap_sub: "Our path to global Web3 and AI domination.",
-    ph1: "Phase 1", ph1_title: "Genesis & Smart Contract Deployment", ph1_desc: "Deployment of LGAI on Sepolia. Community building and official presale launch.",
-    ph2: "Phase 2", ph2_title: "DEX Listing & Global Marketing", ph2_desc: "Liquidity generation and listing on Uniswap. Global influencer partnerships.",
-    ph3: "Phase 3", ph3_title: "AI Council Activation", ph3_desc: "Launch of the LGAI powered autonomous AI SaaS platform. AI agents begin managing treasury.",
+    ph1: "Phase 1", ph1_title: "Genesis & Smart Contract", ph1_desc: "Deployment of LGAI on Sepolia. Official presale launch.",
+    ph2: "Phase 2", ph2_title: "DEX Listing & Marketing", ph2_desc: "Liquidity generation and listing on Uniswap.",
+    ph3: "Phase 3", ph3_title: "AI Council Activation", ph3_desc: "Launch of the LGAI powered autonomous AI SaaS platform.",
     footer: "© 2026 LegionAI Hub. All rights reserved."
   },
   kr: {
+    lang_name: "한국어",
     nav_about: "소개", nav_tokenomics: "토크노믹스", nav_roadmap: "로드맵",
-    btn_connect: "지갑 연결", badge_presale: "LGAI 사전 판매(Presale) 진행 중",
+    btn_connect: "지갑 연결", badge_presale: "LGAI 사전 판매 진행 중",
     hero_title: "최초의 AI 통치 암호화폐 제국",
-    hero_sub: "LGAI는 LegionAI 생태계를 구동하는 핵심 유틸리티 토큰입니다. 자율 AI 에이전트들이 Web3의 미래를 지배합니다.",
-    btn_buy: "LGAI 토큰 구매", btn_wp: "백서 읽기",
+    hero_sub: "LGAI는 LegionAI 생태계를 구동하는 핵심 토큰입니다. 자율 AI 에이전트들이 Web3의 미래를 지배합니다.",
+    btn_buy: "토큰 구매", btn_wp: "백서 읽기",
     widget_title: "프리세일 스왑", widget_status: "Stage 1 진행 중",
-    lbl_pay: "지불할 수량 (ETH)", lbl_receive: "받을 수량 (LGAI)", btn_swap: "지금 스왑하기",
+    lbl_pay: "지불 수량 (ETH)", lbl_receive: "받을 수량 (LGAI)", btn_swap: "스왑하기",
     ref_title: "🚀 친구 초대하고 5% 보너스 받기!",
-    ref_desc: "나만의 초대 링크를 공유하세요. 친구가 구매한 LGAI 수량의 5%를 에어드랍 해드립니다.",
+    ref_desc: "초대 링크를 공유하세요. 친구 구매량의 5%를 에어드랍 해드립니다.",
     ref_copy: "링크 복사", ref_copied: "복사됨!",
-    sec_tokenomics: "LGAI 토크노믹스", sec_tokenomics_sub: "총 발행량: 1,000,000,000 LGAI. 장기적인 생태계 성장을 위한 전략적 분배.",
-    lbl_public: "퍼블릭 세일 (40%)", lbl_liq: "유동성 풀 (30%)", lbl_eco: "생태계 기금 (20%)", lbl_team: "팀 및 파운더 (10%)",
-    sec_roadmap: "전략적 로드맵", sec_roadmap_sub: "글로벌 Web3 및 AI 제국을 향한 여정",
-    ph1: "1단계", ph1_title: "제네시스 & 스마트 컨트랙트 배포", ph1_desc: "LGAI 테스트넷 배포 완료. 글로벌 커뮤니티 구축 및 공식 프리세일 런칭.",
-    ph2: "2단계", ph2_title: "탈중앙화 거래소(DEX) 상장 및 마케팅", ph2_desc: "유니스왑 유동성 공급 및 상장. 글로벌 인플루언서 파트너십 체결.",
-    ph3: "3단계", ph3_title: "AI 통치 위원회 가동", ph3_desc: "LGAI 전용 AI SaaS 플랫폼 공식 오픈. AI 에이전트들의 자금 관리 시작.",
+    sec_tokenomics: "LGAI 토크노믹스", sec_tokenomics_sub: "총 발행량: 1,000,000,000 LGAI. 장기적 성장을 위한 전략적 분배.",
+    lbl_public: "퍼블릭 세일 (40%)", lbl_liq: "유동성 풀 (30%)", lbl_eco: "생태계 (20%)", lbl_team: "팀 (10%)",
+    sec_roadmap: "전략적 로드맵", sec_roadmap_sub: "글로벌 Web3 제국을 향한 여정",
+    ph1: "1단계", ph1_title: "제네시스 & 컨트랙트 배포", ph1_desc: "테스트넷 배포 완료. 공식 프리세일 런칭.",
+    ph2: "2단계", ph2_title: "DEX 상장 및 마케팅", ph2_desc: "유니스왑 유동성 공급 및 글로벌 파트너십.",
+    ph3: "3단계", ph3_title: "AI 통치 위원회 가동", ph3_desc: "AI 에이전트 전용 SaaS 플랫폼 오픈 및 자금 관리 시작.",
     footer: "© 2026 LegionAI 사령부. All rights reserved."
+  },
+  zh: {
+    lang_name: "中文",
+    nav_about: "关于", nav_tokenomics: "代币经济学", nav_roadmap: "路线图",
+    btn_connect: "连接钱包", badge_presale: "LGAI 预售进行中",
+    hero_title: "首个 AI 统治的加密帝国",
+    hero_sub: "LGAI 是驱动 LegionAI 生态系统的原生代币。自主 AI 代理网络将优化 Web3 的未来。",
+    btn_buy: "购买代币", btn_wp: "阅读白皮书",
+    widget_title: "预售兑换", widget_status: "第一阶段活跃",
+    lbl_pay: "支付 (ETH)", lbl_receive: "接收 (LGAI)", btn_swap: "立即兑换",
+    ref_title: "🚀 邀请好友赚取 5% 奖励！",
+    ref_desc: "分享您的专属推荐链接。您将获得好友购买量 5% 的奖励。",
+    ref_copy: "复制链接", ref_copied: "已复制！",
+    sec_tokenomics: "代币经济学", sec_tokenomics_sub: "总供应量：1,000,000,000 LGAI。为长期生态增长而战略分配。",
+    lbl_public: "公募 (40%)", lbl_liq: "流动性池 (30%)", lbl_eco: "生态系统 (20%)", lbl_team: "团队 (10%)",
+    sec_roadmap: "战略路线图", sec_roadmap_sub: "通往全球 Web3 与 AI 主导地位的道路。",
+    ph1: "第一阶段", ph1_title: "创世与智能合约", ph1_desc: "在 Sepolia 部署 LGAI。启动官方预售。",
+    ph2: "第二阶段", ph2_title: "DEX 上线与营销", ph2_desc: "在 Uniswap 提供流动性并上线交易。",
+    ph3: "第三阶段", ph3_title: "AI 委员会激活", ph3_desc: "发布由 LGAI 驱动的自主 AI SaaS 平台。",
+    footer: "© 2026 LegionAI Hub. 保留所有权利。"
+  },
+  ja: {
+    lang_name: "日本語",
+    nav_about: "概要", nav_tokenomics: "トークノミクス", nav_roadmap: "ロードマップ",
+    btn_connect: "ウォレット接続", badge_presale: "LGAI プレセール開催中",
+    hero_title: "初のAI統治暗号資産帝国",
+    hero_sub: "LGAIはLegionAIエコシステムを牽引するネイティブトークンです。自律型AIネットワークがWeb3の未来を最適化します。",
+    btn_buy: "トークン購入", btn_wp: "ホワイトペーパー",
+    widget_title: "プレセールスワップ", widget_status: "ステージ1 進行中",
+    lbl_pay: "支払額 (ETH)", lbl_receive: "受取額 (LGAI)", btn_swap: "今すぐスワップ",
+    ref_title: "🚀 友達招待で5%ボーナス！",
+    ref_desc: "招待リンクをシェアすると、友達の購入額の5%が還元されます。",
+    ref_copy: "リンクをコピー", ref_copied: "コピー完了！",
+    sec_tokenomics: "トークノミクス", sec_tokenomics_sub: "総発行枚数: 1,000,000,000 LGAI。長期的な成長のための戦略的配分。",
+    lbl_public: "パブリックセール (40%)", lbl_liq: "流動性プール (30%)", lbl_eco: "エコシステム (20%)", lbl_team: "チーム (10%)",
+    sec_roadmap: "戦略ロードマップ", sec_roadmap_sub: "グローバルWeb3覇権への道程。",
+    ph1: "フェーズ 1", ph1_title: "ジェネシス＆スマートコントラクト", ph1_desc: "Sepoliaへの展開と公式プレセールの開始。",
+    ph2: "フェーズ 2", ph2_title: "DEX上場＆マーケティング", ph2_desc: "Uniswapでの流動性提供と上場。",
+    ph3: "フェーズ 3", ph3_title: "AI評議会のアクティベーション", ph3_desc: "AI SaaSプラットフォームの正式ローンチ。",
+    footer: "© 2026 LegionAI Hub. All rights reserved."
+  },
+  es: {
+    lang_name: "Español",
+    nav_about: "Acerca", nav_tokenomics: "Tokenomics", nav_roadmap: "Mapa Vial",
+    btn_connect: "Conectar", badge_presale: "PREVENTA LGAI ACTIVA",
+    hero_title: "El Primer Imperio Cripto Gobernado por IA",
+    hero_sub: "LGAI es el token nativo que impulsa el ecosistema LegionAI.",
+    btn_buy: "Comprar Token", btn_wp: "Leer Whitepaper",
+    widget_title: "Swap Preventa", widget_status: "Fase 1 Activa",
+    lbl_pay: "Pagas", lbl_receive: "Recibes", btn_swap: "INTERCAMBIAR",
+    ref_title: "🚀 ¡Invita Amigos y Gana 5%!",
+    ref_desc: "Comparte tu enlace. Recibe el 5% de LGAI comprados.",
+    ref_copy: "Copiar Enlace", ref_copied: "¡Copiado!",
+    sec_tokenomics: "Tokenomics", sec_tokenomics_sub: "Suministro Total: 1,000,000,000 LGAI.",
+    lbl_public: "Venta Pública (40%)", lbl_liq: "Liquidez (30%)", lbl_eco: "Ecosistema (20%)", lbl_team: "Equipo (10%)",
+    sec_roadmap: "Mapa Vial", sec_roadmap_sub: "Nuestro camino hacia el dominio global.",
+    ph1: "Fase 1", ph1_title: "Génesis", ph1_desc: "Despliegue y lanzamiento oficial.",
+    ph2: "Fase 2", ph2_title: "DEX y Marketing", ph2_desc: "Listado en Uniswap.",
+    ph3: "Fase 3", ph3_title: "IA Autónoma", ph3_desc: "Lanzamiento de la plataforma SaaS.",
+    footer: "© 2026 LegionAI Hub."
+  },
+  ru: {
+    lang_name: "Русский",
+    nav_about: "О нас", nav_tokenomics: "Токеномика", nav_roadmap: "Дорожная карта",
+    btn_connect: "Кошелек", badge_presale: "ПРЕСЕЙЛ LGAI АКТИВЕН",
+    hero_title: "Первая криптоимперия ИИ",
+    hero_sub: "LGAI — это нативный токен экосистемы LegionAI.",
+    btn_buy: "Купить LGAI", btn_wp: "Whitepaper",
+    widget_title: "Пресейл", widget_status: "Стадия 1",
+    lbl_pay: "Вы платите", lbl_receive: "Вы получаете", btn_swap: "ОБМЕН",
+    ref_title: "🚀 Пригласи друга - получи 5%!",
+    ref_desc: "Поделись ссылкой и получай 5% с покупок друзей.",
+    ref_copy: "Копировать", ref_copied: "Скопировано!",
+    sec_tokenomics: "Токеномика", sec_tokenomics_sub: "Всего: 1,000,000,000 LGAI.",
+    lbl_public: "Продажа (40%)", lbl_liq: "Ликвидность (30%)", lbl_eco: "Экосистема (20%)", lbl_team: "Команда (10%)",
+    sec_roadmap: "План развития", sec_roadmap_sub: "Наш путь к доминированию Web3.",
+    ph1: "Фаза 1", ph1_title: "Запуск", ph1_desc: "Деплой и пресейл.",
+    ph2: "Фаза 2", ph2_title: "DEX Листинг", ph2_desc: "Листинг на Uniswap.",
+    ph3: "Фаза 3", ph3_title: "ИИ Платформа", ph3_desc: "Запуск автономного ИИ SaaS.",
+    footer: "© 2026 LegionAI Hub."
+  },
+  ar: {
+    lang_name: "العربية",
+    nav_about: "حول", nav_tokenomics: "العملات", nav_roadmap: "خارطة الطريق",
+    btn_connect: "اتصل بالمحفظة", badge_presale: "البيع المسبق مفتوح",
+    hero_title: "أول إمبراطورية تشفير تحكمها الذكاء الاصطناعي",
+    hero_sub: "LGAI هو الرمز الأساسي لنظام LegionAI البيئي.",
+    btn_buy: "شراء LGAI", btn_wp: "قراءة الورقة البيضاء",
+    widget_title: "تبادل", widget_status: "المرحلة 1 نشطة",
+    lbl_pay: "تدفع", lbl_receive: "تتلقى", btn_swap: "تبادل الآن",
+    ref_title: "🚀 ادعُ الأصدقاء واكسب 5٪!",
+    ref_desc: "شارك الرابط الخاص بك. احصل على 5٪ من المشتريات.",
+    ref_copy: "نسخ الرابط", ref_copied: "تم النسخ!",
+    sec_tokenomics: "توزيع الرموز", sec_tokenomics_sub: "إجمالي العرض: 1,000,000,000 LGAI",
+    lbl_public: "بيع عام (40%)", lbl_liq: "سيولة (30%)", lbl_eco: "نظام بيئي (20%)", lbl_team: "فريق (10%)",
+    sec_roadmap: "خارطة الطريق", sec_roadmap_sub: "طريقنا للسيطرة على Web3.",
+    ph1: "المرحلة 1", ph1_title: "التأسيس", ph1_desc: "إطلاق العقد الذكي.",
+    ph2: "المرحلة 2", ph2_title: "الإدراج", ph2_desc: "الإدراج في Uniswap.",
+    ph3: "المرحلة 3", ph3_title: "منصة الذكاء الاصطناعي", ph3_desc: "إطلاق منصة SaaS.",
+    footer: "© 2026 LegionAI Hub."
+  },
+  pt: {
+    lang_name: "Português",
+    nav_about: "Sobre", nav_tokenomics: "Tokenomics", nav_roadmap: "Roteiro",
+    btn_connect: "Conectar", badge_presale: "PRÉ-VENDA ATIVA",
+    hero_title: "O Primeiro Império Cripto Governado por IA",
+    hero_sub: "LGAI é o token nativo que impulsiona o ecossistema LegionAI.",
+    btn_buy: "Comprar", btn_wp: "Ler Whitepaper",
+    widget_title: "Pré-venda Swap", widget_status: "Fase 1",
+    lbl_pay: "Você Paga", lbl_receive: "Você Recebe", btn_swap: "TROCAR AGORA",
+    ref_title: "🚀 Convide Amigos e Ganhe 5%!",
+    ref_desc: "Compartilhe seu link e receba 5% das compras.",
+    ref_copy: "Copiar Link", ref_copied: "Copiado!",
+    sec_tokenomics: "Tokenomics", sec_tokenomics_sub: "Fornecimento Total: 1,000,000,000 LGAI.",
+    lbl_public: "Venda Pública (40%)", lbl_liq: "Liquidez (30%)", lbl_eco: "Ecossistema (20%)", lbl_team: "Equipe (10%)",
+    sec_roadmap: "Roteiro", sec_roadmap_sub: "Nosso caminho para a dominação global.",
+    ph1: "Fase 1", ph1_title: "Gênesis", ph1_desc: "Lançamento oficial.",
+    ph2: "Fase 2", ph2_title: "Listagem DEX", ph2_desc: "Listagem na Uniswap.",
+    ph3: "Fase 3", ph3_title: "IA SaaS", ph3_desc: "Lançamento da plataforma IA.",
+    footer: "© 2026 LegionAI Hub."
+  },
+  fr: {
+    lang_name: "Français",
+    nav_about: "À propos", nav_tokenomics: "Tokenomics", nav_roadmap: "Feuille de route",
+    btn_connect: "Connecter", badge_presale: "PRÉVENTE ACTIVE",
+    hero_title: "Le Premier Empire Crypto Gouverné par l'IA",
+    hero_sub: "LGAI est le jeton natif propulsant l'écosystème LegionAI.",
+    btn_buy: "Acheter", btn_wp: "Lire le Livre Blanc",
+    widget_title: "Prévente Swap", widget_status: "Phase 1",
+    lbl_pay: "Vous Payez", lbl_receive: "Vous Recevez", btn_swap: "ÉCHANGER",
+    ref_title: "🚀 Invitez des amis (5% Bonus)!",
+    ref_desc: "Partagez votre lien et recevez 5%.",
+    ref_copy: "Copier le Lien", ref_copied: "Copié!",
+    sec_tokenomics: "Tokenomics", sec_tokenomics_sub: "Offre Totale: 1,000,000,000 LGAI.",
+    lbl_public: "Vente Publique (40%)", lbl_liq: "Liquidité (30%)", lbl_eco: "Écosystème (20%)", lbl_team: "Équipe (10%)",
+    sec_roadmap: "Feuille de route", sec_roadmap_sub: "Notre chemin vers la domination mondiale.",
+    ph1: "Phase 1", ph1_title: "Genèse", ph1_desc: "Lancement officiel.",
+    ph2: "Phase 2", ph2_title: "DEX Listing", ph2_desc: "Listing sur Uniswap.",
+    ph3: "Phase 3", ph3_title: "Plateforme IA", ph3_desc: "Lancement de SaaS IA.",
+    footer: "© 2026 LegionAI Hub."
+  },
+  de: {
+    lang_name: "Deutsch",
+    nav_about: "Über", nav_tokenomics: "Tokenomics", nav_roadmap: "Roadmap",
+    btn_connect: "Verbinden", badge_presale: "VORVERKAUF LIVE",
+    hero_title: "Das erste von KI regierte Krypto-Imperium",
+    hero_sub: "LGAI ist der native Token des LegionAI-Ökosystems.",
+    btn_buy: "LGAI Kaufen", btn_wp: "Whitepaper Lesen",
+    widget_title: "Vorverkauf Swap", widget_status: "Phase 1",
+    lbl_pay: "Du Zahlst", lbl_receive: "Du Erhältst", btn_swap: "TAUSCHEN",
+    ref_title: "🚀 Freunde einladen (5% Bonus)!",
+    ref_desc: "Teile deinen Link und erhalte 5% Bonus.",
+    ref_copy: "Link Kopieren", ref_copied: "Kopiert!",
+    sec_tokenomics: "Tokenomics", sec_tokenomics_sub: "Gesamtangebot: 1,000,000,000 LGAI.",
+    lbl_public: "Verkauf (40%)", lbl_liq: "Liquidität (30%)", lbl_eco: "Ökosystem (20%)", lbl_team: "Team (10%)",
+    sec_roadmap: "Roadmap", sec_roadmap_sub: "Unser Weg zur globalen Dominanz.",
+    ph1: "Phase 1", ph1_title: "Genesis", ph1_desc: "Offizieller Start.",
+    ph2: "Phase 2", ph2_title: "DEX Listing", ph2_desc: "Listing auf Uniswap.",
+    ph3: "Phase 3", ph3_title: "KI-Plattform", ph3_desc: "Start der SaaS-Plattform.",
+    footer: "© 2026 LegionAI Hub."
   }
 };
 
 export default function App() {
-  const [lang, setLang] = useState('en');
+  const [lang, setLang] = useState('en'); // default to en to look like a global project
   const [walletAddress, setWalletAddress] = useState(null);
   const [lgaiBalance, setLgaiBalance] = useState("0");
   const [referrerAddress, setReferrerAddress] = useState("0x0000000000000000000000000000000000000000"); // default empty referrer
@@ -184,10 +346,8 @@ export default function App() {
       const provider = new BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       
-      // Connect to the Presale Smart Contract!
       const presaleContract = new Contract(PRESALE_ADDRESS, PRESALE_ABI, signer);
       
-      // Call buyTokens with the referrer address
       const tx = await presaleContract.buyTokens(referrerAddress, {
         value: parseEther(ethAmount)
       });
@@ -202,7 +362,7 @@ export default function App() {
 
       setEthAmount('');
       setLgaiAmount('');
-      await fetchBalance(walletAddress, provider); // Refresh balance
+      await fetchBalance(walletAddress, provider); 
     } catch (error) {
       console.error(error);
       alert("Swap Failed or Rejected. Please check console.");
@@ -245,8 +405,11 @@ export default function App() {
 
         <div className="nav-actions">
           <select className="lang-select" value={lang} onChange={(e) => setLang(e.target.value)}>
-            <option value="en">English</option>
-            <option value="kr">한국어</option>
+            {Object.keys(translations).map((langKey) => (
+              <option key={langKey} value={langKey}>
+                {translations[langKey].lang_name}
+              </option>
+            ))}
           </select>
           
           <button className={`wallet-btn ${walletAddress ? 'connected' : ''}`} onClick={connectWallet}>
@@ -266,8 +429,14 @@ export default function App() {
           <h1 className="hero-title">
             {lang === 'en' ? (
               <>The First <span className="highlight">AI-Governed</span><br/>Crypto Empire</>
-            ) : (
+            ) : lang === 'kr' ? (
               <>최초의 <span className="highlight">AI 통치</span><br/>암호화폐 제국</>
+            ) : lang === 'zh' ? (
+              <>首个 <span className="highlight">AI 统治的</span><br/>加密帝国</>
+            ) : lang === 'ja' ? (
+              <>初の <span className="highlight">AI統治</span><br/>暗号資産帝国</>
+            ) : (
+              <>{t.hero_title}</> // fallback for others
             )}
           </h1>
           <p className="hero-subtitle">{t.hero_sub}</p>
@@ -300,7 +469,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* If a referral link is active, show the referrer */}
             {referrerAddress !== "0x0000000000000000000000000000000000000000" && (
               <div style={{fontSize: '11px', color: 'var(--green)', marginBottom: '10px', textAlign: 'center'}}>
                 ✅ Invited by: {formatAddr(referrerAddress)} (You both get benefits!)
