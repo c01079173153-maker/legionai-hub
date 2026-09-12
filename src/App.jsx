@@ -78,7 +78,7 @@ const translations = {
 };
 
 export default function App() {
-  const [lang, setLang] = useState('kr');
+  const [lang, setLang] = useState('en');
   const [walletAddress, setWalletAddress] = useState(null);
   const [lgaiBalance, setLgaiBalance] = useState("0");
   const [referrerAddress, setReferrerAddress] = useState("0x0000000000000000000000000000000000000000"); // default empty referrer
