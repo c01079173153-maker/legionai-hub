@@ -11,6 +11,22 @@ const LGAI_ABI = [
 ];
 const RATE_ETH_TO_LGAI = 10000; // 1 ETH = 10,000 LGAI
 
+// ── FOMO Mock Data ──────────────────────────────────────────────
+const FOMO_ALERTS = [
+  { address: "0x7F2...9a1", amount: "50,000", location: "Tokyo, JP" },
+  { address: "0x3B1...4c2", amount: "120,000", location: "New York, US" },
+  { address: "0x9E4...8f5", amount: "15,000", location: "Seoul, KR" },
+  { address: "0x1A6...3b9", amount: "300,000", location: "Dubai, AE" },
+  { address: "0x5C8...2d4", amount: "8,500", location: "London, UK" }
+];
+
+const AI_MESSAGES = [
+  "Agent-Alpha: Accumulating LGAI... Bullish signal detected.",
+  "Agent-Beta: Smart money is entering the Sepolia pool.",
+  "Agent-Gamma: 10,000 ETH target for Phase 1 Presale.",
+  "Agent-Delta: Neural network predicts 1000x potential."
+];
+
 // ── i18n Dictionary ─────────────────────────────────────────────
 const translations = {
   en: {
@@ -21,6 +37,9 @@ const translations = {
     btn_buy: "Buy LGAI Token", btn_wp: "Read Whitepaper",
     widget_title: "Presale Swap", widget_status: "Stage 1 Active",
     lbl_pay: "You Pay", lbl_receive: "You Receive", btn_swap: "SWAP NOW",
+    ref_title: "🚀 Invite Friends & Earn 5% Bonus!",
+    ref_desc: "Share your unique referral link. You receive 5% of LGAI purchased through your link.",
+    ref_copy: "Copy Link", ref_copied: "Copied!",
     sec_tokenomics: "LGAI Tokenomics", sec_tokenomics_sub: "Total Supply: 1,000,000,000 LGAI. Strategically allocated for long-term ecosystem growth.",
     lbl_public: "Public Sale (40%)", lbl_liq: "Liquidity Pool (30%)", lbl_eco: "Ecosystem (20%)", lbl_team: "Team (10%)",
     sec_roadmap: "Strategic Roadmap", sec_roadmap_sub: "Our path to global Web3 and AI domination.",
@@ -37,6 +56,9 @@ const translations = {
     btn_buy: "LGAI 토큰 구매", btn_wp: "백서 읽기",
     widget_title: "프리세일 스왑", widget_status: "Stage 1 진행 중",
     lbl_pay: "지불할 수량 (ETH)", lbl_receive: "받을 수량 (LGAI)", btn_swap: "지금 스왑하기",
+    ref_title: "🚀 친구 초대하고 5% 보너스 받기!",
+    ref_desc: "나만의 초대 링크를 공유하세요. 친구가 구매한 LGAI 수량의 5%를 에어드랍 해드립니다.",
+    ref_copy: "링크 복사", ref_copied: "복사됨!",
     sec_tokenomics: "LGAI 토크노믹스", sec_tokenomics_sub: "총 발행량: 1,000,000,000 LGAI. 장기적인 생태계 성장을 위한 전략적 분배.",
     lbl_public: "퍼블릭 세일 (40%)", lbl_liq: "유동성 풀 (30%)", lbl_eco: "생태계 기금 (20%)", lbl_team: "팀 및 파운더 (10%)",
     sec_roadmap: "전략적 로드맵", sec_roadmap_sub: "글로벌 Web3 및 AI 제국을 향한 여정",
@@ -44,43 +66,11 @@ const translations = {
     ph2: "2단계", ph2_title: "탈중앙화 거래소(DEX) 상장 및 마케팅", ph2_desc: "유니스왑 유동성 공급 및 상장. 글로벌 인플루언서 파트너십 체결.",
     ph3: "3단계", ph3_title: "AI 통치 위원회 가동", ph3_desc: "LGAI 전용 AI SaaS 플랫폼 공식 오픈. AI 에이전트들의 자금 관리 시작.",
     footer: "© 2026 LegionAI 사령부. All rights reserved."
-  },
-  cn: {
-    nav_about: "关于", nav_tokenomics: "代币经济学", nav_roadmap: "路线图",
-    btn_connect: "连接钱包", badge_presale: "LGAI 预售进行中",
-    hero_title: "首个由 AI 统治的加密帝国",
-    hero_sub: "LGAI 是驱动 LegionAI 生态系统的核心效用代币。自主 AI 代理网络将优化 Web3 的未来。",
-    btn_buy: "购买 LGAI", btn_wp: "阅读白皮书",
-    widget_title: "预售交易", widget_status: "第一阶段进行中",
-    lbl_pay: "您支付", lbl_receive: "您收到", btn_swap: "立即交换",
-    sec_tokenomics: "代币经济学", sec_tokenomics_sub: "总供应量：1,000,000,000 LGAI。为长期生态增长而战略性分配。",
-    lbl_public: "公开销售 (40%)", lbl_liq: "流动性池 (30%)", lbl_eco: "生态系统 (20%)", lbl_team: "团队 (10%)",
-    sec_roadmap: "战略路线图", sec_roadmap_sub: "通往全球 Web3 与 AI 统治之路。",
-    ph1: "第一阶段", ph1_title: "创世与智能合约部署", ph1_desc: "在 Sepolia 部署 LGAI。社区建设和官方预售启动。",
-    ph2: "第二阶段", ph2_title: "DEX 上市与全球营销", ph2_desc: "Uniswap 流动性生成与上市。全球影响者合作。",
-    ph3: "第三阶段", ph3_title: "AI 委员会激活", ph3_desc: "启动由 LGAI 驱动的自主 AI SaaS 平台。AI 代理开始管理资金库。",
-    footer: "© 2026 LegionAI Hub. 版权所有."
-  },
-  jp: {
-    nav_about: "概要", nav_tokenomics: "トークノミクス", nav_roadmap: "ロードマップ",
-    btn_connect: "ウォレット接続", badge_presale: "LGAI プレセール開催中",
-    hero_title: "初のAI統治暗号通貨帝国",
-    hero_sub: "LGAIはLegionAIエコシステムを駆動するネイティブトークンです。自律型AIエージェントがWeb3の未来を最適化します。",
-    btn_buy: "LGAIを購入", btn_wp: "ホワイトペーパー",
-    widget_title: "プレセールスワップ", widget_status: "ステージ1 進行中",
-    lbl_pay: "支払う額", lbl_receive: "受け取る額", btn_swap: "今すぐスワップ",
-    sec_tokenomics: "トークノミクス", sec_tokenomics_sub: "総発行量: 1,000,000,000 LGAI。長期的な成長のための戦略的配分。",
-    lbl_public: "パブリックセール (40%)", lbl_liq: "流動性プール (30%)", lbl_eco: "エコシステム (20%)", lbl_team: "チーム (10%)",
-    sec_roadmap: "戦略的ロードマップ", sec_roadmap_sub: "グローバルWeb3とAI支配への道。",
-    ph1: "フェーズ 1", ph1_title: "ジェネシス＆スマートコントラクト導入", ph1_desc: "SepoliaでのLGAI展開。コミュニティ構築とプレセール開始。",
-    ph2: "フェーズ 2", ph2_title: "DEX上場とグローバルマーケティング", ph2_desc: "Uniswapでの流動性生成と上場。グローバルインフルエンサーとの提携。",
-    ph3: "フェーズ 3", ph3_title: "AI評議会の活性化", ph3_desc: "LGAI駆動の自律型AI SaaSプラットフォームの立ち上げ。AIが資金管理を開始。",
-    footer: "© 2026 LegionAI Hub. 無断複写・転載を禁じます."
   }
 };
 
 export default function App() {
-  const [lang, setLang] = useState('en');
+  const [lang, setLang] = useState('kr'); // default to kr for commander
   const [walletAddress, setWalletAddress] = useState(null);
   const [lgaiBalance, setLgaiBalance] = useState("0");
   
@@ -89,7 +79,12 @@ export default function App() {
   const [lgaiAmount, setLgaiAmount] = useState('');
   const [isSwapping, setIsSwapping] = useState(false);
   
-  const t = translations[lang];
+  // Marketing States
+  const [fomoAlert, setFomoAlert] = useState(null);
+  const [aiMessageIndex, setAiMessageIndex] = useState(0);
+  const [copied, setCopied] = useState(false);
+
+  const t = translations[lang] || translations['en'];
 
   // ── Web3 Connection ────────────────────────────────────────
   const connectWallet = async () => {
@@ -119,6 +114,36 @@ export default function App() {
 
   const formatAddr = (addr) => addr ? `${addr.slice(0, 6)}...${addr.slice(-4)}` : '';
 
+  // ── FOMO & AI Ticker Logic ────────────────────────────────────
+  useEffect(() => {
+    // FOMO Popup logic (Trigger every 8-15 seconds randomly)
+    const triggerFomo = () => {
+      const randomAlert = FOMO_ALERTS[Math.floor(Math.random() * FOMO_ALERTS.length)];
+      setFomoAlert(randomAlert);
+      
+      // Hide after 4 seconds
+      setTimeout(() => {
+        setFomoAlert(null);
+      }, 4000);
+      
+      // Schedule next trigger
+      const nextTime = Math.floor(Math.random() * 7000) + 8000;
+      setTimeout(triggerFomo, nextTime);
+    };
+    
+    const fomoTimer = setTimeout(triggerFomo, 5000);
+
+    // AI Ticker logic (Change message every 4 seconds)
+    const tickerTimer = setInterval(() => {
+      setAiMessageIndex((prev) => (prev + 1) % AI_MESSAGES.length);
+    }, 4000);
+
+    return () => {
+      clearTimeout(fomoTimer);
+      clearInterval(tickerTimer);
+    };
+  }, []);
+
   // ── Swap Logic ──────────────────────────────────────────────
   const handleEthChange = (e) => {
     const val = e.target.value;
@@ -140,7 +165,6 @@ export default function App() {
       const provider = new BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       
-      // ETH -> 사령관님 지갑으로 전송 (Presale 모의 결제)
       const tx = await signer.sendTransaction({
         to: COMMANDER_WALLET,
         value: parseEther(ethAmount)
@@ -161,6 +185,14 @@ export default function App() {
 
   const scrollToPresale = () => {
     document.getElementById('presale-widget').scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const copyRefLink = () => {
+    if(!walletAddress) return alert("Please connect wallet first!");
+    const link = `https://legionai-hub.vercel.app/?ref=${walletAddress}`;
+    navigator.clipboard.writeText(link);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -188,8 +220,6 @@ export default function App() {
           <select className="lang-select" value={lang} onChange={(e) => setLang(e.target.value)}>
             <option value="en">English</option>
             <option value="kr">한국어</option>
-            <option value="cn">中文</option>
-            <option value="jp">日本語</option>
           </select>
           
           <button className={`wallet-btn ${walletAddress ? 'connected' : ''}`} onClick={connectWallet}>
@@ -210,18 +240,23 @@ export default function App() {
           <h1 className="hero-title">
             {lang === 'en' ? (
               <>The First <span className="highlight">AI-Governed</span><br/>Crypto Empire</>
-            ) : lang === 'kr' ? (
-              <>최초의 <span className="highlight">AI 통치</span><br/>암호화폐 제국</>
-            ) : lang === 'cn' ? (
-              <>首个由 <span className="highlight">AI 统治</span> 的<br/>加密帝国</>
             ) : (
-              <>初の <span className="highlight">AI統治</span><br/>暗号通貨帝国</>
+              <>최초의 <span className="highlight">AI 통치</span><br/>암호화폐 제국</>
             )}
           </h1>
           <p className="hero-subtitle">{t.hero_sub}</p>
+          
           <div className="cta-group">
             <button className="btn-primary" onClick={scrollToPresale}>{t.btn_buy}</button>
             <button className="btn-secondary">{t.btn_wp}</button>
+          </div>
+
+          {/* AI TICKER (MARKETING) */}
+          <div className="ai-ticker">
+            <div className="ticker-dot"></div>
+            <div className="typewriter" key={aiMessageIndex}>
+              &gt; {AI_MESSAGES[aiMessageIndex]}
+            </div>
           </div>
 
           {/* PRESALE SWAP WIDGET */}
@@ -233,7 +268,7 @@ export default function App() {
             
             <div className="progress-container">
               <div className="progress-labels">
-                <span>Raised: 650 ETH</span>
+                <span>Raised: 650.4 ETH</span>
                 <span>Goal: 1000 ETH</span>
               </div>
               <div className="progress-bar-bg">
@@ -269,6 +304,22 @@ export default function App() {
               {isSwapping ? 'Processing...' : !walletAddress ? t.btn_connect : t.btn_swap}
             </button>
           </div>
+
+          {/* REFERRAL SYSTEM */}
+          {walletAddress && (
+            <div className="referral-box">
+              <div className="ref-title">{t.ref_title}</div>
+              <div className="ref-desc">{t.ref_desc}</div>
+              <div className="ref-link-box">
+                <div className="ref-link-text">
+                  https://legionai-hub.vercel.app/?ref={walletAddress}
+                </div>
+                <button className="ref-copy-btn" onClick={copyRefLink}>
+                  {copied ? t.ref_copied : t.ref_copy}
+                </button>
+              </div>
+            </div>
+          )}
         </section>
 
         {/* TOKENOMICS SECTION */}
@@ -309,7 +360,7 @@ export default function App() {
                 <p>{t.ph1_desc}</p>
               </div>
             </div>
-            <div className="roadmap-item">
+            <div className="roadmap-item active">
               <div className="roadmap-phase">{t.ph2}</div>
               <div className="roadmap-content">
                 <h3>{t.ph2_title}</h3>
@@ -328,6 +379,17 @@ export default function App() {
 
       </div>
       
+      {/* FOMO TOAST ALERTS */}
+      {fomoAlert && (
+        <div className="fomo-toast">
+          <div className="fomo-icon">💸</div>
+          <div className="fomo-content">
+            <div className="fomo-title">{fomoAlert.address} bought {fomoAlert.amount} LGAI!</div>
+            <div className="fomo-time">Just now from {fomoAlert.location}</div>
+          </div>
+        </div>
+      )}
+
       <footer>
         {t.footer}
       </footer>
