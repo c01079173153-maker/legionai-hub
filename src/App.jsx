@@ -4,11 +4,19 @@ import './index.css';
 
 // ── Web3 Constants ─────────────────────────────────────────────
 const LGAI_ADDRESS = "0xC8C2D7B7736C3B5eC4eD0F547791E4389A054512";
+const PRESALE_ADDRESS = "0x11967364213108F0440764b27671a967a20E31b4";
 const COMMANDER_WALLET = "0x68B56EAc0209B3230891B4e74a78b276f3b74610";
+
 const LGAI_ABI = [
   "function balanceOf(address account) view returns (uint256)",
   "function decimals() view returns (uint8)"
 ];
+
+const PRESALE_ABI = [
+  "function buyTokens(address referrer) payable",
+  "function rate() view returns (uint256)"
+];
+
 const RATE_ETH_TO_LGAI = 10000; // 1 ETH = 10,000 LGAI
 
 // ── FOMO Mock Data ──────────────────────────────────────────────
@@ -70,9 +78,10 @@ const translations = {
 };
 
 export default function App() {
-  const [lang, setLang] = useState('kr'); // default to kr for commander
+  const [lang, setLang] = useState('kr');
   const [walletAddress, setWalletAddress] = useState(null);
   const [lgaiBalance, setLgaiBalance] = useState("0");
+  const [referrerAddress, setReferrerAddress] = useState("0x0000000000000000000000000000000000000000"); // default empty referrer
   
   // Swap Widget States
   const [ethAmount, setEthAmount] = useState('');
@@ -85,6 +94,17 @@ export default function App() {
   const [copied, setCopied] = useState(false);
 
   const t = translations[lang] || translations['en'];
+
+  // ── INIT & URL Parsing ───────────────────────────────────────
+  useEffect(() => {
+    // Parse ?ref=0x... from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const ref = urlParams.get('ref');
+    if (ref && /^0x[a-fA-F0-9]{40}$/.test(ref)) {
+      setReferrerAddress(ref);
+      console.log("Referrer set to:", ref);
+    }
+  }, []);
 
   // ── Web3 Connection ────────────────────────────────────────
   const connectWallet = async () => {
@@ -103,12 +123,20 @@ export default function App() {
         console.error("Failed to switch to Sepolia", err);
       }
 
-      const contract = new Contract(LGAI_ADDRESS, LGAI_ABI, provider);
-      const bal = await contract.balanceOf(accounts[0]);
-      const decimals = await contract.decimals();
-      setLgaiBalance(formatUnits(bal, decimals));
+      await fetchBalance(accounts[0], provider);
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const fetchBalance = async (address, provider) => {
+    try {
+      const contract = new Contract(LGAI_ADDRESS, LGAI_ABI, provider);
+      const bal = await contract.balanceOf(address);
+      const decimals = await contract.decimals();
+      setLgaiBalance(formatUnits(bal, decimals));
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -116,24 +144,15 @@ export default function App() {
 
   // ── FOMO & AI Ticker Logic ────────────────────────────────────
   useEffect(() => {
-    // FOMO Popup logic (Trigger every 8-15 seconds randomly)
     const triggerFomo = () => {
       const randomAlert = FOMO_ALERTS[Math.floor(Math.random() * FOMO_ALERTS.length)];
       setFomoAlert(randomAlert);
-      
-      // Hide after 4 seconds
-      setTimeout(() => {
-        setFomoAlert(null);
-      }, 4000);
-      
-      // Schedule next trigger
+      setTimeout(() => setFomoAlert(null), 4000);
       const nextTime = Math.floor(Math.random() * 7000) + 8000;
       setTimeout(triggerFomo, nextTime);
     };
-    
     const fomoTimer = setTimeout(triggerFomo, 5000);
 
-    // AI Ticker logic (Change message every 4 seconds)
     const tickerTimer = setInterval(() => {
       setAiMessageIndex((prev) => (prev + 1) % AI_MESSAGES.length);
     }, 4000);
@@ -144,7 +163,7 @@ export default function App() {
     };
   }, []);
 
-  // ── Swap Logic ──────────────────────────────────────────────
+  // ── Swap Logic (Smart Contract Interaction) ────────────────
   const handleEthChange = (e) => {
     const val = e.target.value;
     if (val === '' || /^\d*\.?\d*$/.test(val)) {
@@ -165,19 +184,28 @@ export default function App() {
       const provider = new BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       
-      const tx = await signer.sendTransaction({
-        to: COMMANDER_WALLET,
+      // Connect to the Presale Smart Contract!
+      const presaleContract = new Contract(PRESALE_ADDRESS, PRESALE_ABI, signer);
+      
+      // Call buyTokens with the referrer address
+      const tx = await presaleContract.buyTokens(referrerAddress, {
         value: parseEther(ethAmount)
       });
       
-      alert(`Transaction Submitted!\nHash: ${tx.hash}\nWaiting for confirmation...`);
+      alert(`Transaction Submitted to Smart Contract!\nHash: ${tx.hash}\nWaiting for confirmation...`);
       await tx.wait();
-      alert(`Swap Successful! ${lgaiAmount} LGAI will be airdropped shortly.`);
+      
+      alert(`Swap Successful! ${lgaiAmount} LGAI has been instantly transferred to your wallet via Smart Contract!`);
+      if (referrerAddress !== "0x0000000000000000000000000000000000000000") {
+        alert(`🎉 The Referrer (${formatAddr(referrerAddress)}) also received a 5% LGAI Bonus instantly!`);
+      }
+
       setEthAmount('');
       setLgaiAmount('');
+      await fetchBalance(walletAddress, provider); // Refresh balance
     } catch (error) {
       console.error(error);
-      alert("Swap Failed or Rejected.");
+      alert("Swap Failed or Rejected. Please check console.");
     } finally {
       setIsSwapping(false);
     }
@@ -203,7 +231,6 @@ export default function App() {
         <div className="bg-glow-sphere bg-glow-2" />
       </div>
 
-      {/* NAVBAR */}
       <nav className="navbar">
         <div className="nav-brand">
           <span style={{ fontSize: '28px', marginRight: '8px' }}>🔮</span>
@@ -234,7 +261,6 @@ export default function App() {
 
       <div className="app-layout">
         
-        {/* HERO SECTION */}
         <section className="hero-section" id="about">
           <div className="badge">{t.badge_presale}</div>
           <h1 className="hero-title">
@@ -251,7 +277,6 @@ export default function App() {
             <button className="btn-secondary">{t.btn_wp}</button>
           </div>
 
-          {/* AI TICKER (MARKETING) */}
           <div className="ai-ticker">
             <div className="ticker-dot"></div>
             <div className="typewriter" key={aiMessageIndex}>
@@ -259,7 +284,6 @@ export default function App() {
             </div>
           </div>
 
-          {/* PRESALE SWAP WIDGET */}
           <div id="presale-widget" className="presale-widget-container">
             <div className="presale-header">
               <div className="presale-title">{t.widget_title}</div>
@@ -275,6 +299,13 @@ export default function App() {
                 <div className="progress-bar-fill"></div>
               </div>
             </div>
+
+            {/* If a referral link is active, show the referrer */}
+            {referrerAddress !== "0x0000000000000000000000000000000000000000" && (
+              <div style={{fontSize: '11px', color: 'var(--green)', marginBottom: '10px', textAlign: 'center'}}>
+                ✅ Invited by: {formatAddr(referrerAddress)} (You both get benefits!)
+              </div>
+            )}
 
             <div className="swap-input-group">
               <div className="input-label"><span>{t.lbl_pay}</span><span>Balance: {walletAddress ? 'ETH' : '-'}</span></div>
@@ -301,11 +332,10 @@ export default function App() {
               onClick={walletAddress ? handleSwap : connectWallet}
               disabled={isSwapping || (walletAddress && (!ethAmount || ethAmount <= 0))}
             >
-              {isSwapping ? 'Processing...' : !walletAddress ? t.btn_connect : t.btn_swap}
+              {isSwapping ? 'Processing Smart Contract...' : !walletAddress ? t.btn_connect : t.btn_swap}
             </button>
           </div>
 
-          {/* REFERRAL SYSTEM */}
           {walletAddress && (
             <div className="referral-box">
               <div className="ref-title">{t.ref_title}</div>
@@ -322,7 +352,6 @@ export default function App() {
           )}
         </section>
 
-        {/* TOKENOMICS SECTION */}
         <section className="section" id="tokenomics">
           <h2 className="section-title">{t.sec_tokenomics}</h2>
           <p className="section-subtitle">{t.sec_tokenomics_sub}</p>
@@ -347,7 +376,6 @@ export default function App() {
           </div>
         </section>
 
-        {/* ROADMAP SECTION */}
         <section className="section" id="roadmap">
           <h2 className="section-title">{t.sec_roadmap}</h2>
           <p className="section-subtitle">{t.sec_roadmap_sub}</p>
@@ -379,7 +407,6 @@ export default function App() {
 
       </div>
       
-      {/* FOMO TOAST ALERTS */}
       {fomoAlert && (
         <div className="fomo-toast">
           <div className="fomo-icon">💸</div>
