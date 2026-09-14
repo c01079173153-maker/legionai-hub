@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserProvider, Contract, formatUnits, parseEther } from 'ethers';
+import PresaleContractData from './contracts/PresaleABI.json';
+import TokenContractData from './contracts/TokenABI.json';
 import './index.css';
 
 // ── Web3 Constants ─────────────────────────────────────────────
@@ -7,17 +9,10 @@ const LGAI_ADDRESS = "0xC8C2D7B7736C3B5eC4eD0F547791E4389A054512";
 const PRESALE_ADDRESS = "0x11967364213108F0440764b27671a967a20E31b4";
 const COMMANDER_WALLET = "0x68B56EAc0209B3230891B4e74a78b276f3b74610";
 
-const LGAI_ABI = [
-  "function balanceOf(address account) view returns (uint256)",
-  "function decimals() view returns (uint8)"
-];
+const LGAI_ABI = TokenContractData.abi;
+const PRESALE_ABI = PresaleContractData.abi;
 
-const PRESALE_ABI = [
-  "function buyTokens(address referrer) payable",
-  "function rate() view returns (uint256)"
-];
-
-const RATE_ETH_TO_LGAI = 10000; // 1 ETH = 10,000 LGAI
+const RATE_ETH_TO_LGAI = 1000000; // 1 ETH = 1,000,000 LGAI (스마트 컨트랙트에 설정된 Rate)
 
 // ── FOMO Mock Data ──────────────────────────────────────────────
 const FOMO_ALERTS = [
@@ -374,7 +369,7 @@ export default function App() {
       
       const presaleContract = new Contract(PRESALE_ADDRESS, PRESALE_ABI, signer);
       
-      const tx = await presaleContract.buyTokens(referrerAddress, {
+      const tx = await presaleContract.buyTokens({
         value: parseEther(ethAmount)
       });
       
