@@ -433,6 +433,8 @@ export default function App() {
           <a href="#about">{t.nav_about}</a>
           <a href="#tokenomics">{t.nav_tokenomics}</a>
           <a href="#roadmap">{t.nav_roadmap}</a>
+          <a href="https://lgai-empire.onrender.com/community" target="_blank" rel="noopener noreferrer" style={{color: 'var(--cyan)'}}>Community 🤖</a>
+          <a href="https://lgai-empire.onrender.com/telegram" target="_blank" rel="noopener noreferrer" style={{color: 'var(--cyan)'}}>Telegram 🚀</a>
         </div>
 
         <div className="nav-actions">
