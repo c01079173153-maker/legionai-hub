@@ -477,7 +477,7 @@ export default function App() {
           
           <div className="cta-group">
             <button className="btn-primary" onClick={scrollToPresale}>{t.btn_buy}</button>
-            <button className="btn-secondary">{t.btn_wp}</button>
+            <button className="btn-secondary" onClick={() => window.open('https://lgai-empire.onrender.com/whitepaper.html', '_blank')}>{t.btn_wp}</button>
           </div>
 
           <div className="ai-ticker">
