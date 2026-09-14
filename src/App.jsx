@@ -258,20 +258,6 @@ export default function App() {
 
   const t = translations[lang] || translations['en'];
 
-  // ── INIT & URL Parsing ───────────────────────────────────────
-  useEffect(() => {
-    // Parse ?ref=0x... from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const ref = urlParams.get('ref');
-    if (ref && /^0x[a-fA-F0-9]{40}$/.test(ref)) {
-      setReferrerAddress(ref);
-      console.log("Referrer set to:", ref);
-    }
-
-    // Attempt to load presale contract balance globally without wallet connection
-    fetchPresaleBalanceGlobally();
-  }, []);
-
   const fetchPresaleBalanceGlobally = async () => {
     try {
       // Use default ethers provider for Sepolia to read contract without wallet
@@ -286,6 +272,20 @@ export default function App() {
       console.log("Global fetch presale balance error:", e);
     }
   };
+
+  // ── INIT & URL Parsing ───────────────────────────────────────
+  useEffect(() => {
+    // Parse ?ref=0x... from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const ref = urlParams.get('ref');
+    if (ref && /^0x[a-fA-F0-9]{40}$/.test(ref)) {
+      setReferrerAddress(ref);
+      console.log("Referrer set to:", ref);
+    }
+
+    // Attempt to load presale contract balance globally without wallet connection
+    fetchPresaleBalanceGlobally();
+  }, []);
 
   // ── Web3 Connection ────────────────────────────────────────
   const connectWallet = async () => {
