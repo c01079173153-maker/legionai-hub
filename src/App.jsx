@@ -4,9 +4,9 @@ import PresaleContractData from './contracts/PresaleABI.json';
 import TokenContractData from './contracts/TokenABI.json';
 import './index.css';
 
-// ── Web3 Constants ─────────────────────────────────────────────
-const LGAI_ADDRESS = "0xC8C2D7B7736C3B5eC4eD0F547791E4389A054512";
-const PRESALE_ADDRESS = "0x11967364213108F0440764b27671a967a20E31b4";
+// ── Web3 Constants ───────────────────────────────────────────── // 진짜 Sepolia 메인넷 배포 주소
+const LGAI_ADDRESS = "0x880431f3bd33A362F698aD5Be25002623eFCc95c";
+const PRESALE_ADDRESS = "0xD6C3a12C89f2B534526FcaD96d70Cf4F9De25EF2";
 const COMMANDER_WALLET = "0x68B56EAc0209B3230891B4e74a78b276f3b74610";
 
 const LGAI_ABI = TokenContractData.abi;
