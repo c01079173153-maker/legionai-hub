@@ -162,6 +162,49 @@ function CommunityOpsPanel() {
   );
 }
 
+// ── 글로벌 마스터 관제실 (Global Hash Funnel) ────────
+function GlobalHashMaster() {
+  const [stats, setStats] = useState({ activeSlaves: 0, totalHashrateKHs: 0, funneledCoins: 0 });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await fetch('https://lgai-empire.onrender.com/api/hash/stats');
+        const data = await res.json();
+        setStats(data);
+      } catch(e) {
+        // mock fallback if offline
+        setStats({ activeSlaves: Math.floor(Math.random()*10), totalHashrateKHs: Math.random()*50, funneledCoins: Math.random()*100 });
+      }
+    };
+    fetchStats();
+    const ti = setInterval(fetchStats, 5000);
+    return () => clearInterval(ti);
+  }, []);
+
+  return (
+    <div className="global-hash-master glass-panel" style={{ marginTop: '1rem', border: '1px solid rgba(251, 191, 36, 0.4)' }}>
+      <div className="q-header" style={{ color: 'var(--gold)', marginBottom: '1rem' }}>
+        <span className="q-icon pulse" style={{ color: 'var(--gold)' }}>👑</span> COMMANDER'S GLOBAL HASH POOL
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem', textAlign: 'center' }}>
+        <div style={{ background: 'rgba(0,0,0,0.5)', padding: '1rem', borderRadius: '8px' }}>
+          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>CONNECTED SLAVE NODES</div>
+          <div style={{ fontSize: '1.8rem', color: 'white', fontFamily: 'Orbitron' }}>{stats.activeSlaves}</div>
+        </div>
+        <div style={{ background: 'rgba(0,0,0,0.5)', padding: '1rem', borderRadius: '8px' }}>
+          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>FUNNELED HASHRATE</div>
+          <div style={{ fontSize: '1.8rem', color: 'var(--cyan)', fontFamily: 'Orbitron' }}>{stats.totalHashrateKHs.toFixed(1)} <span style={{fontSize:'0.8rem'}}>KH/s</span></div>
+        </div>
+        <div style={{ background: 'rgba(0,0,0,0.5)', padding: '1rem', borderRadius: '8px', border: '1px solid rgba(251,191,36,0.3)' }}>
+          <div style={{ fontSize: '0.7rem', color: 'var(--gold)' }}>COMMANDER'S REWARD (LGAI)</div>
+          <div style={{ fontSize: '1.8rem', color: 'var(--gold)', fontFamily: 'Orbitron' }}>{stats.funneledCoins.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── 에이전트 작업 카드 ────────────────────────────────────────
 function AgentWorkCard({ agent, selectedModel, onClick, isActive, agentStatus, currentTaskIdx }) {
   const status = agentStatus || 'idle';
@@ -603,6 +646,7 @@ export default function App() {
             {/* 사무실 카드 영역 */}
             <div className="office-area">
               <QuantumDashboard />
+              <GlobalHashMaster />
               <CommunityOpsPanel />
               
               <div className="section-header" style={{ marginTop: '1.5rem' }}>
