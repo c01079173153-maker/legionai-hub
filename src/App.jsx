@@ -110,51 +110,34 @@ function QuantumDashboard() {
 // ── AI 커뮤니티 통제실 (Community Ops) ────────
 function CommunityOpsPanel() {
   const [logs, setLogs] = useState([
-    { time: '16:00:12', platform: 'Telegram', user: '@crypto_whale', msg: 'Is this just another meme?', ai: 'Negative. LGAI is a quantized DePIN utility matrix. See docs.', sentiment: 'Neutral' }
+    "[SYSTEM] AI Community Operations online.",
+    "[SYSTEM] Awaiting live logs from main server..."
   ]);
 
   useEffect(() => {
-    const fuds = ['Devs doing something?', 'Price dumping?', 'Wen Binance?', 'Rug pull?'];
-    const shills = ['LGAI is the future of money.', 'Just bought another 1M LGAI 🚀', 'Omniverse is mind blowing.'];
-    const aiResponsesFud = ['FUD detected. System metrics remain bullish.', 'LGAI burn rate is up 12%. Hold the line.', 'Omni-chain arbitrage just secured 12.4 ETH.', 'Liquidity is locked. Check smart contract.'];
-    const aiResponsesShill = ['Affirmative. Welcome to the Empire.', 'Your contribution to the network is noted.', 'Prepare for Phase 4.'];
-
-    const ti = setInterval(() => {
-      setLogs(prev => {
-        const isFud = Math.random() > 0.5;
-        const msg = isFud ? fuds[Math.floor(Math.random() * fuds.length)] : shills[Math.floor(Math.random() * shills.length)];
-        const ai = isFud ? aiResponsesFud[Math.floor(Math.random() * aiResponsesFud.length)] : aiResponsesShill[Math.floor(Math.random() * aiResponsesShill.length)];
-        
-        const now = new Date();
-        const time = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
-        
-        const newLog = {
-          time,
-          platform: Math.random() > 0.5 ? 'Telegram' : 'Discord',
-          user: `@user_${Math.floor(Math.random()*9999)}`,
-          msg,
-          ai,
-          sentiment: isFud ? 'Negative' : 'Positive'
-        };
-        
-        const nextLogs = [newLog, ...prev];
-        if (nextLogs.length > 4) nextLogs.pop();
-        return nextLogs;
-      });
-    }, 3000);
+    const fetchLogs = async () => {
+      try {
+        const res = await fetch('https://lgai-empire.onrender.com/api/bot/logs');
+        const data = await res.json();
+        if(data && data.length > 0) {
+          setLogs(data.slice(0, 6));
+        }
+      } catch(e) {}
+    };
+    fetchLogs();
+    const ti = setInterval(fetchLogs, 5000);
     return () => clearInterval(ti);
   }, []);
 
   return (
     <div className="community-ops glass-panel" style={{ marginTop: '1rem', border: '1px solid rgba(236,72,153,0.3)' }}>
       <div className="q-header" style={{ color: 'var(--social)', marginBottom: '1rem' }}>
-        <span className="q-icon pulse" style={{ color: 'var(--social)' }}>🤖</span> AUTONOMOUS COMMUNITY OPS <span className="q-badge" style={{ background: 'rgba(236,72,153,0.2)', color: 'var(--social)', borderColor: 'var(--social)' }}>ENGAGED</span>
+        <span className="q-icon pulse" style={{ color: 'var(--social)' }}>🤖</span> AUTONOMOUS COMMUNITY OPS <span className="q-badge" style={{ background: 'rgba(236,72,153,0.2)', color: 'var(--social)', borderColor: 'var(--social)' }}>LIVE DB</span>
       </div>
-      <div className="ops-terminal" style={{ background: 'rgba(0,0,0,0.5)', padding: '1rem', borderRadius: '8px', fontFamily: 'monospace', fontSize: '11px', color: 'var(--text-muted)' }}>
+      <div className="ops-terminal" style={{ background: 'rgba(0,0,0,0.8)', padding: '1rem', borderRadius: '8px', fontFamily: 'monospace', fontSize: '12px', color: 'var(--text-muted)', minHeight: '180px' }}>
         {logs.map((log, i) => (
-          <div key={i} style={{ marginBottom: '0.75rem', animation: 'fade-up 0.3s ease' }}>
-            <div style={{ color: 'var(--text-secondary)' }}>[{log.time}] [{log.platform}] {log.user}: <span style={{ color: log.sentiment === 'Negative' ? '#ef4444' : '#10b981' }}>"{log.msg}"</span></div>
-            <div style={{ color: 'var(--cyan)', marginTop: '2px', paddingLeft: '1rem', borderLeft: '2px solid var(--cyan)' }}>↳ [AI_AGENT]: {log.ai}</div>
+          <div key={i} style={{ marginBottom: '0.75rem', animation: 'fade-up 0.3s ease', color: log.includes('DEFENSE') ? '#ef4444' : log.includes('SHILLING') ? '#10b981' : '#a78bfa' }}>
+            {log}
           </div>
         ))}
       </div>
