@@ -3,12 +3,12 @@ import './index.css';
 
 // ── 에이전트 정의 ─────────────────────────────────────────────
 const AGENTS = [
-  { id: 1, name: '염 사령관', role: 'Supreme Commander', avatar: '👑', color: '#f59e0b', bgColor: 'rgba(245,158,11,0.15)', tasks: ['전략 수립', '작전 명령 하달', '리소스 배분'], defaultModel: 'qwen2.5:1.5b' },
-  { id: 2, name: 'Alpha — 전략 참모', role: 'Chief Strategy Officer', avatar: '🧠', color: '#00d2ff', bgColor: 'rgba(0,210,255,0.12)', tasks: ['시장 분석', '투자 전략 도출', '리스크 계산', '포트폴리오 최적화'], defaultModel: 'gemma3:4b' },
-  { id: 3, name: 'Beta — 코드 장인', role: 'Lead Engineer', avatar: '⚙️', color: '#a855f7', bgColor: 'rgba(168,85,247,0.12)', tasks: ['API 개발', '자동화 스크립트 작성', '버그 수정', '시스템 아키텍처'], defaultModel: 'phi4-mini:3.8b' },
-  { id: 4, name: 'Gamma — 시장 스파이', role: 'Intelligence Analyst', avatar: '🔭', color: '#10b981', bgColor: 'rgba(16,185,129,0.12)', tasks: ['실시간 시세 모니터링', '뉴스 감지', '경쟁사 분석', '거래량 추적'], defaultModel: 'llama3.2:3b' },
+  { id: 1, name: '염 사령관', role: 'Supreme Commander', avatar: '👑', color: '#f59e0b', bgColor: 'rgba(245,158,11,0.15)', tasks: ['전략 수립', '작전 명령 하달', '리소스 배분'], defaultModel: 'llama3.2:3b' },
+  { id: 2, name: 'Alpha — 전략 참모', role: 'Chief Strategy Officer', avatar: '🧠', color: '#00d2ff', bgColor: 'rgba(0,210,255,0.12)', tasks: ['시장 분석', '투자 전략 도출', '리스크 계산', '포트폴리오 최적화'], defaultModel: 'llama3.2:3b' },
+  { id: 3, name: 'Beta — 코드 장인', role: 'Lead Engineer', avatar: '⚙️', color: '#a855f7', bgColor: 'rgba(168,85,247,0.12)', tasks: ['API 개발', '자동화 스크립트 작성', '버그 수정', '시스템 아키텍처'], defaultModel: 'qwen2.5:1.5b' },
+  { id: 4, name: 'Gamma — 시장 스파이', role: 'Intelligence Analyst', avatar: '🔭', color: '#10b981', bgColor: 'rgba(16,185,129,0.12)', tasks: ['실시간 시세 모니터링', '뉴스 감지', '경쟁사 분석', '거래량 추적'], defaultModel: 'phi3.5:mini' },
   { id: 5, name: 'Delta — 봇 병사', role: 'Bithumb Auto-Trader', avatar: '🤖', color: '#ef4444', bgColor: 'rgba(239,68,68,0.12)', tasks: ['자동 매수/매도', '손절 관리', '수익 실현', '주문 최적화'], defaultModel: 'qwen2.5:1.5b' },
-  { id: 6, name: 'Epsilon — 디자이너', role: 'Creative Director', avatar: '🎨', color: '#ec4899', bgColor: 'rgba(236,72,153,0.12)', tasks: ['UI 목업 제작', '브랜드 아이덴티티', '마케팅 자료', '사용자 경험 설계'], defaultModel: 'gemma3:4b' },
+  { id: 6, name: 'Epsilon — 디자이너', role: 'Creative Director', avatar: '🎨', color: '#ec4899', bgColor: 'rgba(236,72,153,0.12)', tasks: ['UI 목업 제작', '브랜드 아이덴티티', '마케팅 자료', '사용자 경험 설계'], defaultModel: 'phi3.5:mini' },
 ];
 
 const MODEL_ICONS = {
