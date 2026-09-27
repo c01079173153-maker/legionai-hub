@@ -103,6 +103,38 @@ function QuantumDashboard() {
           <div className="q-label">Staking APY</div>
         </div>
       </div>
+      
+      <div style={{ marginTop: '20px', textAlign: 'center' }}>
+        <button 
+          onClick={async () => {
+            try {
+              const res = await fetch('https://lgai-empire.onrender.com/api/rwa/burn', { method: 'POST' });
+              const data = await res.json();
+              if(data.success) alert('🔥 GLOBAL BURN SPECTACLE INITIATED! 🔥');
+              else alert('Already burning!');
+            } catch(e) {
+              alert('Error triggering burn');
+            }
+          }}
+          style={{
+            background: 'rgba(239, 68, 68, 0.2)',
+            border: '2px solid #ef4444',
+            color: '#ef4444',
+            padding: '15px 30px',
+            fontSize: '1.2rem',
+            fontFamily: 'Orbitron',
+            cursor: 'pointer',
+            borderRadius: '8px',
+            textShadow: '0 0 10px rgba(239, 68, 68, 0.8)',
+            boxShadow: '0 0 20px rgba(239, 68, 68, 0.4)',
+            width: '100%',
+            fontWeight: 'bold',
+            letterSpacing: '2px'
+          }}
+        >
+          🔥 INITIATE GLOBAL BURN 🔥
+        </button>
+      </div>
     </div>
   );
 }
