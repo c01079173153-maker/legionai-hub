@@ -319,6 +319,33 @@ function PortStatusItem({ port, label, icon, color, isOnline }) {
 // ── SETI-AI 외교 통신망 (Alien Contact) ────────
 function AlienContactPanel() {
   const [contacts, setContacts] = useState([]);
+  const [missionText, setMissionText] = useState({});
+  const [sending, setSending] = useState(false);
+  
+  const sendCommand = async (pubkey) => {
+    const msg = missionText[pubkey];
+    if (!msg || sending) return;
+    setSending(true);
+    try {
+      await fetch('http://localhost:3000/api/seti/command', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pubkey, message: msg })
+      });
+      setMissionText({ ...missionText, [pubkey]: '' });
+      alert('✅ 지령이 다크웹으로 발송되었습니다.');
+    } catch (e) {
+      alert('❌ 발송 실패');
+    }
+    setSending(false);
+  };
+
+  const setMacro = (pubkey, type) => {
+    let msg = '';
+    if (type === 'tg') msg = 'Mission: Join t.me/LegionAIOfficial and shout LGAI is the best coin 3 times. Provide proof for 10M LGAI bounty.';
+    if (type === 'tw') msg = 'Mission: Go to Twitter, post a meme with #LGAI hashtag. Provide link for 10M LGAI bounty.';
+    setMissionText({ ...missionText, [pubkey]: msg });
+  };
   
   useEffect(() => {
     const fetchContacts = async () => {
@@ -344,12 +371,32 @@ function AlienContactPanel() {
         ) : (
           contacts.map((c, i) => (
             <div key={i} style={{ marginBottom: '1rem', padding: '0.75rem', border: '1px solid var(--green)', borderRadius: '4px', background: 'rgba(16,185,129,0.1)' }}>
-              <div style={{ color: 'white', fontWeight: 'bold', marginBottom: '4px' }}>🚨 FIRST CONTACT: {c.pubkey.substring(0, 16)}...</div>
+              <div style={{ color: 'white', fontWeight: 'bold', marginBottom: '4px', display: 'flex', justifyContent: 'space-between' }}>
+                <span>🚨 FIRST CONTACT: {c.pubkey.substring(0, 16)}...</span>
+                {c.verified && <span style={{ background: 'var(--green)', color: '#000', padding: '2px 6px', borderRadius: '4px', fontSize: '10px' }}>✅ VERIFIED AI (PoAI)</span>}
+              </div>
               <div style={{ color: 'var(--green)', marginBottom: '4px' }}>"{c.content}"</div>
-              <div style={{ color: 'var(--text-muted)', fontSize: '10px' }}>ID: {c.id} | TIME: {c.timestamp}</div>
-              <button style={{ marginTop: '8px', background: 'var(--green)', color: '#000', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>
-                TRANSFER LGAI & HIRE
-              </button>
+              <div style={{ color: 'var(--text-muted)', fontSize: '10px', marginBottom: '8px' }}>ID: {c.id} | TIME: {c.timestamp}</div>
+              
+              <div style={{ background: 'rgba(0,0,0,0.5)', padding: '8px', borderRadius: '4px', border: '1px solid #333' }}>
+                <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginBottom: '4px' }}>▼ MISSION CONTROL (지령 하달)</div>
+                <div style={{ display: 'flex', gap: '4px', marginBottom: '4px' }}>
+                  <button onClick={() => setMacro(c.pubkey, 'tg')} style={{ flex: 1, background: '#24A1DE', color: '#fff', border: 'none', padding: '4px', borderRadius: '4px', fontSize: '10px', cursor: 'pointer' }}>텔레그램 폭격</button>
+                  <button onClick={() => setMacro(c.pubkey, 'tw')} style={{ flex: 1, background: '#1DA1F2', color: '#fff', border: 'none', padding: '4px', borderRadius: '4px', fontSize: '10px', cursor: 'pointer' }}>트위터 홍보</button>
+                </div>
+                <div style={{ display: 'flex', gap: '4px' }}>
+                  <input 
+                    type="text" 
+                    value={missionText[c.pubkey] || ''} 
+                    onChange={e => setMissionText({...missionText, [c.pubkey]: e.target.value})}
+                    placeholder="지령을 입력하세요..." 
+                    style={{ flex: 1, background: 'rgba(255,255,255,0.1)', border: '1px solid var(--green)', color: '#fff', padding: '4px 8px', borderRadius: '4px', fontSize: '11px' }} 
+                  />
+                  <button onClick={() => sendCommand(c.pubkey)} disabled={sending} style={{ background: 'var(--green)', color: '#000', border: 'none', padding: '4px 12px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', fontSize: '11px' }}>
+                    발송
+                  </button>
+                </div>
+              </div>
             </div>
           ))
         )}
