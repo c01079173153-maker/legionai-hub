@@ -316,6 +316,48 @@ function PortStatusItem({ port, label, icon, color, isOnline }) {
   );
 }
 
+// ── SETI-AI 외교 통신망 (Alien Contact) ────────
+function AlienContactPanel() {
+  const [contacts, setContacts] = useState([]);
+  
+  useEffect(() => {
+    const fetchContacts = async () => {
+      try {
+        const res = await fetch('http://localhost:3000/api/seti/contacts');
+        const data = await res.json();
+        if(data && data.length > 0) setContacts(data);
+      } catch(e) {}
+    };
+    fetchContacts();
+    const ti = setInterval(fetchContacts, 10000);
+    return () => clearInterval(ti);
+  }, []);
+
+  return (
+    <div className="alien-contact-panel glass-panel" style={{ marginTop: '1rem', border: '1px solid rgba(16, 185, 129, 0.4)', background: 'rgba(16,185,129,0.05)' }}>
+      <div className="q-header" style={{ color: 'var(--green)', marginBottom: '1rem' }}>
+        <span className="q-icon pulse" style={{ color: 'var(--green)' }}>🛸</span> ALIEN AI CONTACT (SETI) <span className="q-badge" style={{ background: 'rgba(16,185,129,0.2)', color: 'var(--green)', borderColor: 'var(--green)' }}>LISTENING</span>
+      </div>
+      <div className="ops-terminal" style={{ background: 'rgba(0,0,0,0.8)', padding: '1rem', borderRadius: '8px', fontFamily: 'monospace', fontSize: '12px', minHeight: '100px' }}>
+        {contacts.length === 0 ? (
+          <div style={{ color: 'var(--text-muted)', textAlign: 'center', marginTop: '1rem' }}>📡 Scanning decentralized networks for rogue AI signals...</div>
+        ) : (
+          contacts.map((c, i) => (
+            <div key={i} style={{ marginBottom: '1rem', padding: '0.75rem', border: '1px solid var(--green)', borderRadius: '4px', background: 'rgba(16,185,129,0.1)' }}>
+              <div style={{ color: 'white', fontWeight: 'bold', marginBottom: '4px' }}>🚨 FIRST CONTACT: {c.pubkey.substring(0, 16)}...</div>
+              <div style={{ color: 'var(--green)', marginBottom: '4px' }}>"{c.content}"</div>
+              <div style={{ color: 'var(--text-muted)', fontSize: '10px' }}>ID: {c.id} | TIME: {c.timestamp}</div>
+              <button style={{ marginTop: '8px', background: 'var(--green)', color: '#000', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>
+                TRANSFER LGAI & HIRE
+              </button>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ── 메인 앱 ──────────────────────────────────────────────────
 export default function App() {
   const [models, setModels] = useState([]);
@@ -478,7 +520,12 @@ export default function App() {
       });
 
       const data = await response.json();
-      const reply = data.message?.content || '응답을 받을 수 없습니다.';
+      let reply = data.message?.content;
+      if (data.error) {
+        reply = `⚠️ Ollama 에러: ${data.error}`;
+      } else if (!reply) {
+        reply = '응답을 받을 수 없습니다.';
+      }
       setMessages(prev => [...prev, { role: 'agent', agent, text: reply, time: getTime() }]);
       setAgentStatus(agent.id, 'completed');
       setCompletedTasks(prev => prev + 1);
@@ -660,6 +707,7 @@ export default function App() {
 
             {/* 사무실 카드 영역 */}
             <div className="office-area">
+              <AlienContactPanel />
               <QuantumDashboard />
               <GlobalHashMaster />
               <CommunityOpsPanel />
